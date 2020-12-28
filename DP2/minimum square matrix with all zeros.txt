@@ -1,0 +1,73 @@
+package dp2;
+
+public class Max0_sq {
+
+	public static int maxZero(int arr[][]) {
+		int r=arr.length;
+		int c=arr[0].length;
+		int storage[][]=new int[r][c];
+		for(int i=0;i<c;i++) {
+			if(arr[0][i]==0)
+				storage[0][i]=1;
+			else 
+				storage[0][i]=0;
+
+		}
+
+		for(int i=0;i<r;i++) {
+			if(arr[i][0]==0)
+				storage[i][0]=1;
+			else 
+				storage[i][0]=0;
+		}
+		int max=Integer.MIN_VALUE;
+		for(int i=1;i<r;i++) {
+			for(int j=1;j<c;j++) {
+				if(arr[i][j]==1) {
+					storage[i][j]=0;
+				}
+				else {
+
+					int cal=Math.min(storage[i-1][j], Math.min(storage[i-1][j-1], storage[i][j-1]));
+					storage[i][j]=cal+1;
+
+
+				}
+			}
+		}
+
+		for(int i=0;i<r;i++) {
+			for(int j=0;j<c;j++) {
+				System.out.print(storage[i][j]+" ");
+			}
+			System.out.println();
+		}
+
+
+		for(int i=0;i<r;i++) {
+			for(int j=0;j<c;j++) {
+				if(max<storage[i][j]) {
+					max=storage[i][j];
+				}
+			}
+		}
+
+
+
+
+		return max;
+	}
+
+
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int M[][] = {{0}};
+
+		System.out.println(maxZero(M));
+
+
+	}
+
+}

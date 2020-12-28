@@ -1,0 +1,59 @@
+package dp2;
+
+public class LIS {
+	//using recusion only 
+	public static int lis(int arr[]) {
+		return lis(arr,Integer.MIN_VALUE,0);
+	}
+	
+	public static int lis(int arr[],int min,int i) {
+		if (i==arr.length|| arr.length==0) {
+			return 0;
+		}
+		
+		int added=0;
+		if(arr[i]>min) {
+			added=1+lis(arr,arr[i],i+1);
+		}
+		int not_added=lis(arr,min,i+1);
+		
+		return(Math.max(added, not_added));
+		
+	}
+	
+	public static int lisDP(int arr[]) {
+		int n=arr.length;
+		int storge[]=new int[n];
+		for(int i=0;i<n;i++) {
+			storge[i]=1;
+		}
+		
+		for(int i=1;i<n;i++) {
+			int check_max=0;
+			for(int j=i-1;j>=0;j--) {
+				if(arr[i]>arr[j]&& check_max<storge[j]) {
+					check_max=storge[j];
+				}
+			}
+			storge[i]=1+check_max;
+		}
+		
+		int max=Integer.MIN_VALUE;
+		for(int elem:storge) {
+			if(elem>max) {
+				max=elem;
+			}
+		}
+		return max;
+		
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int arr[]= {1,2,2};
+		System.out.println(lisDP(arr));
+		System.out.println(lis(arr));
+		
+	}
+
+}

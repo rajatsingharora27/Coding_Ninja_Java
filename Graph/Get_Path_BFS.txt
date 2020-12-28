@@ -1,0 +1,96 @@
+package graph;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Get_Path_BFS {
+	
+	public static int[][] buildGraph(){
+		Scanner sc=new Scanner(System.in);
+		//System.out.println("Enter no of Vertex");
+		int v=sc.nextInt();
+		//System.out.println("Enter no of Edge");
+		int e=sc.nextInt();
+		int graphMat[][]=new int[v][v];
+		for(int i=0;i<e;i++) {
+			//System.out.println((i+1)+" :Enter the edge pair");
+			int fv=sc.nextInt();
+			int sv=sc.nextInt();
+			graphMat[fv][sv]=1;
+			graphMat[sv][fv]=1;
+		}
+		return graphMat;
+	}
+	
+	public static void getpathBfs(int edge[][],int v1,int v2) {
+		boolean flag[]=new boolean[edge.length];
+		
+				getpathBfs(edge,v1,v2,flag);
+			
+		
+	}
+
+	private static void getpathBfs(int[][] edge, int v1, int v2, boolean[] flag) {
+		// TODO Auto-generated method stub
+		HashMap<Integer, Integer>map=new HashMap<>();
+		Queue<Integer> q=new LinkedList<>();
+		q.add(v1);
+		flag[v1]=true;
+		int temp=0;
+		while(!q.isEmpty()) {
+			int fv=q.poll();
+			for(int i=0;i<edge.length;i++) {
+				if(!flag[i]&& edge[fv][i]==1 ) {
+					q.add(i);
+					flag[i]=true;
+					map.put(fv, i);
+					if(i==v2) {
+						temp=1;
+						break;
+					}
+				}
+			}	
+		}
+		
+		ArrayList<Integer>arr=new ArrayList<>();
+		if(temp==0) {
+			return; 
+		}
+		
+		
+		
+		arr.add(v2);
+		for(Integer key : map.keySet()) {
+			//System.out.print(key);
+			arr.add(key);
+		}
+		for(Integer elem:arr) {
+			System.out.print(elem+" ");
+		}
+		
+		
+		
+		
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
+		int graph[][]=buildGraph();
+		//System.out.println("First number v1");
+		int v1=sc.nextInt();
+		
+		//System.out.println("second number v2");
+		int v2=sc.nextInt();
+		getpathBfs(graph,v1,v2);
+		
+		
+		
+		
+
+	}
+
+}

@@ -1,0 +1,32 @@
+package dp2;
+
+public class AllWays {
+	
+	public static int allways(int x,int n) {
+		return allways(x,n,1);
+	}
+	
+
+	private static int allways(int x, int n, int i) {
+		// TODO Auto-generated method stub
+		int val= x-(int)Math.pow(i, n);
+		if(val==0) {
+			return 1;
+		}
+		if(val<0) {
+			return 0;
+		}
+		int val1=allways(x, n, i+1);
+		int val2=allways(val, n, i+1);
+		
+		return val1+val2;
+		
+	}
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println(allways(100,2));
+	}
+
+}

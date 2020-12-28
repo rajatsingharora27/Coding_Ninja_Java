@@ -1,0 +1,129 @@
+package dp2;
+
+import java.util.Scanner;
+
+public class MinPath {
+	
+	public static int minCostPath(int [][]input) {
+		int row=0;
+		int col=0;
+		return minCostPath(input,row,col);
+	}
+	
+	public static int minCostPath(int [][]input,int i,int j) {
+		if(i== input.length-1 && j==input[0].length-1 ) {
+			return input[i][j];
+		}
+		
+		if(i>=input.length-1 || j>=input[0].length-1) {
+			return Integer.MAX_VALUE;
+		}
+		
+		int costpath1=minCostPath(input,i,j+1);
+		int costpath2=minCostPath(input,i+1,j+1);
+		int costpath3=minCostPath(input,i+1,j);
+		
+		int min=Math.min(costpath1, Math.min(costpath2, costpath3));
+		return input[i][j]+min;
+	}
+	
+	
+	public static int minCostPathM(int [][]input) {
+		int r=input.length;
+		int c=input[0].length;
+		int storage[][]=new int[r][c];
+		for(int i=0;i<r;i++) {
+			for (int j=0;j<c;j++) {
+				storage[i][j]=-1;
+			}
+		}
+		
+		return minCostPathM(input,storage,0,0);
+	}
+	
+	public static int minCostPathM(int input[][],int storage[][],int i,int j) {
+		
+		int r=input.length;
+		int c=input[0].length;
+		
+		if(i>=r || j>=c) {
+			return Integer.MAX_VALUE;
+		}
+		
+		if(i==r-1 && j==c-1) {
+			storage[r-1][c-1]=input[i][j];
+			return storage[i][j];
+		}
+		
+		if(storage[i][j]!=-1) {
+			
+			return storage[i][j];
+		}
+		
+		int costpath1=minCostPathM(input, storage , i, j+1);
+		int costpath2=minCostPathM(input, storage ,i+1, j+1);
+		int costpath3=minCostPathM(input, storage, i+1, j);
+		
+		storage[i][j]= input[i][j]+Math.min(costpath1, Math.min(costpath2, costpath3));
+		
+		return storage[i][j];
+		
+		
+		
+	}
+	
+	
+	public static int minCostPathDP(int arr[][] ) {
+		int r=arr.length;
+		int c= arr[0].length;
+		
+		int storage[][]=new int[r][c];
+		
+		storage[r-1][c-1]=arr[r-1][c-1];
+		
+		for(int j=c-2;j>=0;j--) {
+			storage[r-1][j]=arr[r-1][j]+storage[r-1][j+1];
+		}
+		
+		for(int i=r-2;i>=0;i--) {
+			storage[i][c-1]=arr[i][c-1]+storage[i+1][c-1];
+		}
+		for(int i=r-2;i>=0;i--) {
+			for(int j=c-2;j>=0;j--) {
+				storage[i][j]=arr[i][j]+Math.min(storage[i][j+1], Math.min(storage[i+1][j+1], storage[i+1][j]));
+			}
+		}
+		
+		return storage[0][0];
+		
+	}
+	
+	
+	
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter number of rows");
+		int row=sc.nextInt();
+		System.out.println("Enter number of coloums");
+		int col=sc.nextInt();
+		
+		int mat[][]=new int [row][col];
+		for(int i=0;i<row;i++) {
+			for(int j=0;j<col;j++) {
+				//System.out.println("Enter the element");
+				mat[i][j]=sc.nextInt();
+			}
+		}
+		System.out.println(minCostPathDP(mat));
+		System.out.println(minCostPathM(mat));
+		System.out.println(minCostPath(mat));
+		
+		
+		
+
+	}
+
+}

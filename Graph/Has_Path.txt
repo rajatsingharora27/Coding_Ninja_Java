@@ -1,0 +1,76 @@
+package graph;
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Has_Path {
+	//Using DFS
+	public static int[][] buildGraph(){
+		Scanner sc=new Scanner(System.in);
+		//System.out.println("Enter no of Vertex");
+		int v=sc.nextInt();
+		//System.out.println("Enter no of Edge");
+		int e=sc.nextInt();
+		int graphMat[][]=new int[v][v];
+		for(int i=0;i<e;i++) {
+			//System.out.println((i+1)+" :Enter the edge pair");
+			int fv=sc.nextInt();
+			int sv=sc.nextInt();
+			graphMat[fv][sv]=1;
+			graphMat[sv][fv]=1;
+		}
+		return graphMat;
+	}
+	
+	public static boolean has_path(int edge[][],int v1,int v2) {
+		boolean flag[]=new boolean[edge.length];
+		return has_path(edge,v1,v2,flag);
+	}
+	
+	public static boolean has_path(int edge[][],int v1,int v2,boolean flag[]) {
+		if(v1==v2) {
+			return true;
+		}
+		flag[v1]=true;
+		
+		for(int i=0;i<edge.length;i++) {
+			if(edge[v1][i]==1 && !flag[i]) {
+				boolean res=has_path(edge,i,v2,flag);
+				if(res==true) {
+					return true;
+				}
+			}
+		}
+		return false;
+		
+		
+		
+	}
+	
+	
+	//Using BFS
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
+		int graph[][]=buildGraph();
+		//System.out.println("v1: ");
+		int v1=sc.nextInt();
+		//System.out.println("v2: ");
+		int v2=sc.nextInt();
+		System.out.println(has_path(graph,v1,v2));
+
+	}
+
+}

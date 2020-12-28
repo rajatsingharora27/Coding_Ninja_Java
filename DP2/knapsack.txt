@@ -1,0 +1,105 @@
+package dp2;
+
+public class KnapSack0_1 {
+
+	public static int knapsack(int[] weight,int value[],int maxWeight, int n) {
+		return knapsack(weight,value,maxWeight,n,0);
+	}
+
+	public static int knapsack(int[] weight,int value[],int maxWeight, int n,int i) {
+
+		if(maxWeight==0 || n==i) {
+			return 0;
+		}
+
+		if(weight[i]>maxWeight) {
+			return knapsack(weight, value, maxWeight, n, i+1);
+		}
+		else {
+			int val1= value[i]+knapsack(weight, value, maxWeight-weight[i], n, i+1);
+			int val2=knapsack(weight, value, maxWeight, n, i+1);
+
+			int max=Math.max(val1, val2);
+			return max;
+		}
+	}
+
+	
+	
+	public static int knapsackM(int[] weight,int value[],int n,int maxWeight) {
+		int storage[][]=new int[n+1][maxWeight+1];
+		for(int i=0;i<=n;i++) {
+			for(int j=0;j<=maxWeight;j++) {
+				storage[i][j]=-1;
+			}
+		}
+		return knapsackM(weight, value, maxWeight,storage,n);
+	}
+	
+	private static int knapsackM(int[] weight, int[] value,  int maxWeight, int[][] storage,int n) {
+			
+		if(n==0 || maxWeight==0) {
+			storage[n][maxWeight] = 0;
+			
+			return storage[n][maxWeight];
+		}
+		if(storage[n][maxWeight]!=-1) {
+			return storage[n][maxWeight];
+		}
+		
+		if(weight[n-1] > maxWeight ) {
+			storage[n][maxWeight] = knapsackM(weight, value, maxWeight, storage, n-1);
+			return storage[n][maxWeight];
+		}
+		storage[n][maxWeight] = Math.max( knapsackM(weight, value, maxWeight, storage, n-1) , 
+				knapsackM(weight, value, maxWeight-weight[n-1], storage, n-1) + value[n-1]
+				);
+		return storage[n][maxWeight];
+	}
+	
+
+	
+	public static int knapsackDP(int weight[],int value[],int n,int maxWeight ) {
+		int r=n;
+		int c=maxWeight;
+		int storage[][]=new int [n+1][maxWeight+1];
+		
+		for(int i=0;i<=r;i++) {
+			storage[i][0]=0;
+		}
+		
+		for(int i=0;i<=c;i++) {
+			storage[0][i]=0;
+		}
+		
+		
+		for(int i=1;i<=r;i++) {
+			for(int j=1;j<=c;j++) {
+				if(weight[i-1]>j) {
+					storage[i][j]=storage[i-1][j];
+				}
+				else {
+					int val1=value[i-1]+storage[i-1][j-weight[i-1]];
+					int val2=storage[i-1][j];
+					int ans=Math.max(val1, val2);
+					storage[i][j]=ans;
+				}
+			}
+		}
+		
+		return storage[r][c];		
+		
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int weight[]= {1,2,4,5};
+		int value[]= {5,4,8,6 };
+		int maxWeight=5;
+		int n=weight.length;
+		System.out.println(knapsackDP(weight,value,n,maxWeight));
+		System.out.println(knapsackM(weight,value,n,maxWeight));
+		System.out.println(knapsack(weight,value,maxWeight,n));
+	}
+
+}

@@ -1,0 +1,125 @@
+package dp2;
+
+public class Edit_distance {
+	// we are interested in number of steps only hence not adding or deleting anything in string 
+	public static int editDistance(String s,String t) {
+
+		if(s.length()==0) {
+			return t.length();
+		}
+
+		if(t.length()==0) {
+			return s.length();
+		}
+
+		if(s.charAt(0)==t.charAt(0)) {
+			return editDistance(s.substring(1), t.substring(1));
+		}
+
+		//inserting
+		int insert=editDistance(s, t.substring(1));
+		//delete
+		int del=editDistance(s.substring(1),t);
+		//subsitute
+		int sub=editDistance(s.substring(1), t.substring(1));
+
+		int min=Math.min(insert, Math.min(del, sub));
+
+		return 1+min;
+
+
+
+	}
+
+	public static int editDistanceM(String s,String t) {
+		int m=s.length();
+		int n=t.length();
+		int storage[][]=new int[m+1][n+1];
+		for(int i=0;i<=m;i++) {
+			for(int j=0;j<=n;j++) {
+				storage[i][j]=-1;
+			}
+		}
+		return editDistanceM(s, t,storage);
+
+	}
+
+	private static int  editDistanceM(String s, String t, int[][] storage) {
+		int m=s.length();
+		int n=t.length();
+
+		if(m==0) {
+			storage[m][n]=n;
+			return storage[m][n];
+		}
+
+		if(n==0) {
+			storage[m][n]=m;
+			return storage[m][n];
+		}
+
+		if(storage[m][n]!=-1) {
+			return storage[m][n];
+		}
+
+		if(s.charAt(0)==t.charAt(0)) {
+			storage[m][n]= editDistanceM(s.substring(1), t.substring(1),storage);
+
+		}
+
+		else {
+			//inserting
+			int insert=editDistanceM(s, t.substring(1),storage);
+			//delete
+			int del=editDistanceM(s.substring(1),t,storage);
+			//subsitute
+			int sub=editDistanceM(s.substring(1), t.substring(1),storage);
+
+			int min=Math.min(insert, Math.min(del, sub));
+
+			storage[m][n]=1+min;
+		}
+		return storage[m][n];
+	}
+
+	public static int editDistanceDP(String s,String t) {
+		int m=s.length();
+		int n=t.length();
+		int storage[][]=new int[m+1][n+1];
+		
+		for(int i =0;i<=n;i++) {
+			storage[0][i]=i;
+		}
+		
+		for(int i =0;i<=m;i++) {
+			storage[i][0]=i;
+		}
+		
+		for(int i=1;i<=m;i++) {
+			for(int j=1;j<=n;j++) {
+				if(s.charAt(m-i)==t.charAt(n-j)) {
+					storage[i][j]=storage[i-1][j-1];
+				}
+				else{
+					int min=Math.min(storage[i-1][j-1], Math.min(storage[i-1][j], storage[i][j-1]));
+					storage[i][j]=1+min;
+				}
+			}
+		}
+		return storage[m][n];
+
+
+
+	}
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String s="whgtdwhgtdg";
+		String t="aswcfg";
+		System.out.println(editDistanceDP(s,t));
+		System.out.println(editDistanceM(s,t));
+		System.out.println(editDistance(s,t));
+	}
+
+}

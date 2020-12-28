@@ -1,0 +1,52 @@
+package dp2;
+
+public class LCS {
+
+	public static int lcsM(String s,String t) {
+		int storage[][]=new int[s.length()+1][t.length()+1];
+		for(int i=0;i<storage.length;i++) {
+			for(int j=0;j<storage[0].length;j++) {
+				storage[i][j]=-1;
+			}
+		}
+		return lcsM(s,t,storage);
+	}
+	
+	public static int lcsM(String s,String t,int storage[][]) {
+		int m=s.length();
+		int n=t.length();
+		
+		if(storage[m][n]!=-1) {
+			return storage[m][n];
+		}
+		
+		if(s.length()==0|| t.length()==1) {
+			storage[m][n]=0;
+			return storage[m][n];
+		}
+		
+		
+		if(s.charAt(0)==t.charAt(1)) {
+			storage[m][n]=1+lcsM(s.substring(1),t.substring(1));
+			return storage[m][n];
+		}
+		else {
+			int op1=lcsM(s.substring(1),t);
+			int op2=lcsM(s,t.substring(1));
+			int max=Math.max(op1,op2);
+			storage[m][n]=max;
+			return storage[m][n];
+		}
+	}
+	
+	
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String s="adgei";
+		String t="adegi";
+		System.out.println(lcsM(s,t));
+		//System.out.println(lcs(s,t));
+	}
+}

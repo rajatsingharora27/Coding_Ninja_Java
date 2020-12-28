@@ -1,0 +1,71 @@
+package dp2;
+
+import java.util.Arrays;
+
+public class Loot_house {
+	
+	public static int maxMoneyLooted(int[] n) {
+		return maxMoneyLooted(n,0);
+	}
+	
+	private static int maxMoneyLooted(int[] n, int i) {
+		if(i>=n.length) {
+			
+			return 0;
+		}
+		int val1=n[i]+maxMoneyLooted(n,i+2);
+		int val2=maxMoneyLooted(n,i+1);
+		
+		return Math.max(val1, val2);	
+	}
+
+	public static int lootHousesMemo(int[] arr) {
+		int n=arr.length;
+		int[] storage = new int[n+1];
+		Arrays.fill(storage, -1);
+		return lootHousesMemo(arr, n,storage);
+	}
+
+	public static int lootHousesMemo(int[] arr, int n, int[] storage) {
+		
+		if(n<=0) {
+			storage[0] = 0;
+			return storage[0];
+		}
+		if(storage[n]!=-1) {
+			return storage[n];
+		}
+		
+		storage[n] = Math.max(lootHousesMemo(arr, n-1,storage),  lootHousesMemo(arr, n-2, storage)+arr[n-1]);
+		return storage[n];
+	}
+
+	public static int maxMoneyLootedDP(int arr[]) {
+		
+		int n=arr.length;
+		if(n==0){
+            return 0;
+        }
+		int storage[]=new int[n+1];
+		storage[1]=arr[0];
+		storage[0]=0;
+		
+		for(int i=2;i<=n;i++) {
+			storage[i]=Math.max(arr[i-1]+storage[i-2], storage[i-1]);
+		}
+		
+		return storage[n];
+	}
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int n[]= {10,2,30,20,3,50};
+		System.out.println(lootHousesMemo(n));
+		System.out.println(maxMoneyLootedDP(n));
+		System.out.println(maxMoneyLooted(n));
+		
+
+	}
+
+}

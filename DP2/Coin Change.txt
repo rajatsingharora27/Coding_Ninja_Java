@@ -1,0 +1,83 @@
+package dp2;
+
+public class CoinChange {
+
+	public static int coinChange(int arr[],int num) {
+		return coinChange(arr,num,0);
+	}
+	
+	
+	
+	private static int coinChange(int[] arr, int num, int i) {
+		if(num==0) {
+			return 1;
+		}
+		if(i==arr.length||num<0) {
+			return 0;
+		}
+		
+		int op1=coinChange(arr,num-arr[i],i+1);
+		
+		int op2=coinChange(arr,num,i+1);
+		return op1+op2;
+	
+	}
+
+	public static int coinChangeR(int arr[],int num) {
+		return coinChangeR(arr,num,0);
+	}
+	
+	private static int coinChangeR(int[] arr, int num, int i) {
+		if(num==0) {
+			return 1;
+		}
+		if(i==arr.length||num<0) {
+			return 0;
+		}
+		
+		int op1=coinChangeR(arr,num-arr[i],i);
+		
+		int op2=coinChangeR(arr,num,i+1);
+		return op1+op2;
+	
+	}
+	
+	
+	public static int coinChangeDP(int denomination[],int value) {
+		int n=denomination.length;
+		int storage[][]=new int[n+1][value+1];
+		for(int i = 0;i<=n;i++) {
+			storage[i][0]=1;
+		}
+		for(int i = 1;i<=value;i++) {
+			storage[1][i]=0;
+		}
+		
+		for(int i=1;i<=n;i++) {
+			//int op1=0;
+			//int op2=0;
+			for(int j=1;j<=value;j++) {
+				if(j-denomination[i-1]>=0) {
+					int op1=storage[i][j-denomination[i-1]];
+					int op2=storage[i-1][j];
+					storage[i][j]=op1+op2;
+				}
+				else {
+					storage[i][j]=storage[i-1][j];
+				}
+			}
+		}
+		return storage[n][value];
+	}
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int arr[]= {1,2,3,4,5,6};
+		int n=250;
+		//System.out.println(coinChange(arr,n));
+		System.out.println(coinChangeDP(arr,n));
+		System.out.println(coinChangeR(arr,n));
+	}
+
+}

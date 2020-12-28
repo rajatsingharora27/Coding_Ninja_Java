@@ -1,0 +1,55 @@
+package dp1;
+
+public class CountBTS {
+
+	public static int countBTS(int h) {
+		if(h==0|| h==1) {
+			return 1;
+		}
+		int c1=countBTS(h-1)*(2*countBTS(h-2)+countBTS(h-1));
+		return(c1);
+	}
+	
+	public static int countBTSM(int h) {
+		int storage[]=new int[h+1];
+		return countBTS(h,storage);
+	}
+	
+	public static int countBTS(int h,int storage[]) {
+		if(h==0|| h==1) {
+			storage[h]=h;
+			return storage[h];
+		}
+		
+		int c1=countBTS(h-1)*(2*countBTS(h-2)+countBTS(h-1));
+		storage[h]=c1;
+		return(storage[h]);
+	}
+	
+	public static long countBTSDP(int h) {
+		long[] dp = new long[h + 1]; 
+		final int MOD = 1000000007; 
+        
+        dp[0] = 1; 
+        dp[1] = 1; 
+          
+        for(int i = 2; i <= h; ++i) { 
+        	
+        	
+        	
+            dp[i] = (dp[i - 1] * ((2 * dp [i - 2])% MOD + dp[i - 1]) % MOD) % MOD; 
+        }
+            return dp[h]; 
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int n=100;
+		System.out.println(countBTSDP(n));
+		System.out.println(countBTSM(n));
+		System.out.println(countBTS(n));
+	}
+
+}

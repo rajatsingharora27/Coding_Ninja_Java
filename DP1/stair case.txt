@@ -1,0 +1,101 @@
+package dp1;
+
+public class StairCase {
+
+	public static int count(int n) {
+
+		if(n==1 || n==0) {
+			return 1;
+		}
+		if(n==2) {
+			return 2;
+		}
+		if(n==3) {
+			return 4;
+		}
+
+		int op1=count(n-1);
+		int op2=count(n-2);
+		int op3=count(n-3);
+
+		return(op1+op2+op3);
+
+
+
+	}
+
+	public static int countM(int n) {
+		int storage[]=new int[n+1];
+		return countM(n,storage);
+	}
+
+	public static int countM(int n,int storage[]) {
+
+		if(n==0||n==1 ) {
+			storage[n]=1;
+			return storage[n];
+		}
+
+		if(n==2 ) {
+			storage[n]=2;
+			return storage[n];
+		}
+
+		if(n==3 ) {
+			storage[n]=4;
+			return storage[n];
+		}
+
+		if(storage[n]!=0) {
+			return storage[n];
+		}
+
+		int op1=count(n-1);
+		int op2=count(n-2);
+		int op3=count(n-3);
+
+		storage[n]=op1+op2+op3;
+
+		return storage[n];
+
+	}
+
+
+	public static long countDP(int n) {
+		
+		long storage[]=new long [n+1];
+		
+		if(n>2) {
+		storage[0]=1;
+		storage[1]=1;
+		storage[2]=2;
+		}
+		
+		if(n==1 || n==0) {
+			return 1;
+		}
+		if(n==2) {
+			return 2;
+		}
+		
+		
+		
+		for(int i=3;i<=n;i++) {
+			storage[i]=storage[i-1]+storage[i-2]+storage[i-3];
+		}
+		
+		return storage[n];
+		
+		
+	}
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int n=4;
+		System.out.println(countDP(n));
+		System.out.println(countM(n));
+		System.out.println(count(n));
+	}
+
+}
