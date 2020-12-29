@@ -1,0 +1,77 @@
+package graph;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Get_path {
+	
+	public static int[][] buildGraph(){
+		Scanner sc=new Scanner(System.in);
+		//System.out.println("Enter no of Vertex");
+		int v=sc.nextInt();
+		//System.out.println("Enter no of Edge");
+		int e=sc.nextInt();
+		int graphMat[][]=new int[v][v];
+		for(int i=0;i<e;i++) {
+			//System.out.println((i+1)+" :Enter the edge pair");
+			int fv=sc.nextInt();
+			int sv=sc.nextInt();
+			graphMat[fv][sv]=1;
+			graphMat[sv][fv]=1;
+		}
+		return graphMat;
+	}
+	
+	public static void getPath(int edge[][],int v1,int v2) {
+		ArrayList<Integer> arr=new ArrayList<>();
+		int n=edge.length;
+		boolean flag[]=new boolean[n];
+		//System.out.println(getPath(edge,v1,v2,flag,arr));
+		arr=getPath(edge,v1,v2,flag,arr);
+		if(arr!=null) {
+			for(Integer i:arr) {
+				System.out.print(i+" ");
+			}
+		}
+		
+		
+	}
+	
+
+	private static ArrayList<Integer> getPath(int[][] edge, int v1, int v2, boolean[] flag, ArrayList<Integer> arr) {
+		if(v1==v2) {
+			arr.add(v1);
+			return arr;
+		}
+		
+		flag[v1]=true;
+		
+		for (int i = 0; i < edge.length; i++) {
+			
+			if((!flag[i]&& edge[v1][i]==1)) {
+				
+				arr=getPath(edge, i, v2, flag, arr);
+				if(arr!=null) {
+					arr.add(v1);
+					//flag[i]=true;
+					return arr;	
+				}
+			}
+			
+		}
+		return null;
+	
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
+		int edge[][]=buildGraph();
+		int v1=sc.nextInt();
+		int v2=sc.nextInt();
+		getPath(edge,v1,v2);
+		
+
+	}
+
+}
